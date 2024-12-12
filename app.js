@@ -1,16 +1,17 @@
 const express = require('express');
+const path = require('path');
 const apiRouter = require('./Routes/api.js');
 
 const app = express();
 
 app.use(express.json());
+app.use(express.static(path.join(__dirname, 'views')));
 
 app.get('/', (req, res) => {
-    res.send('Hello World');
+    res.sendFile(path.join(__dirname, 'index.html'));
 });
 
-app.use('/api',apiRouter); 
-
+app.use('/api', apiRouter);
 
 // Start the server
 const PORT = process.env.PORT || 3000;

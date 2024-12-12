@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="index.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Markdown Note App</title>
+</head>
+
+<body>
+    <h1>Markdown Note</h1>
+    <h2>Write Markdown Content</h2>
+    <div id="global-div">
+        <div id="form-div">
+            <form id="markdownForm">
+                <input type="text" name="fileName" placeholder="File Name" required>
+                <textarea name="content" placeholder="Markdown Content" required></textarea>
+                <div id="button-div">
+                    <button type="button" id="saveButton">Save</button>
+                    <button type="button" id="convertButton">Convert</button>
+                </div>
+            </form>
+            <h2>Upload a Markdown File</h2>
+            <form id="uploadForm" enctype="multipart/form-data">
+                <input type="file" name="file" accept=".md" required>
+                <div id="button-div">
+                    <button type="submit">Upload</button>
+                </div>
+            </form>
+        </div>
+        <div id="result"></div>
+    </div>
+
+
+    <script>
+        document.getElementById('saveButton').addEventListener('click', async () => {
+            const formData = new FormData(document.getElementById('markdownForm'));
+            const data = {
+                fileName: formData.get('fileName'),
+                content: formData.get('content')
+            };
+            const response = await fetch('/api/save', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            });
+            const result = await response.text();
+            document.getElementById('result').innerText = result;
+        });
+
+        document.getElementById('convertButton').addEventListener('click', async () => {
+            const formData = new FormData(document.getElementById('markdownForm'));
+            const data = {
+                content: formData.get('content')
+            };
+            const response = await fetch('/api/convert', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            });
+            const result = await response.text();
+            document.getElementById('result').innerHTML = result;
+        });
+
+        document.getElementById('uploadForm').addEventListener('submit', async (event) => {
+            event.preventDefault();
+            const formData = new FormData(event.target);
+            const response = await fetch('/api/upload', {
+                method: 'POST',
+                body: formData
+            });
+            const result = await response.text();
+            document.getElementById('result').innerHTML = result;
+        });
+    </script>
+</body>
+
+</html>
