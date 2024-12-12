@@ -1,0 +1,28 @@
+### Upload a file
+POST http://localhost:3000/upload
+Content-Type: multipart/form-data
+
+--boundary
+Content-Disposition: form-data; name="file"; filename="example.md"
+Content-Type: text/markdown
+
+# This is an example markdown file.
+--boundary--
+
+### Save a file
+POST http://localhost:3000/save
+Content-Type: application/json
+
+{
+  "name": "example.md",
+  "content": "# This is an example markdown file."
+}
+
+### Convert Markdown to HTML
+POST http://localhost:3000/convert
+Content-Type: application/json
+
+{
+  "name": "example.md",
+  "content": "# This is an example markdown file."
+}
