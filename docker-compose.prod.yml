@@ -1,0 +1,12 @@
+version: '3.7'
+
+services:
+  markdown_app:
+    container_name: markdown_app_container
+    build: .
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+    env_file:
+      - ./.env
